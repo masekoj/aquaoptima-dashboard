@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { AppShell } from "@/components/layout/AppShell";
 import { GrowthCurveCard } from "@/components/dashboard/GrowthCurveCard";
+import { ScenariosPanel } from "@/components/dashboard/ScenariosPanel";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,6 +40,8 @@ function Dashboard() {
         </div>
 
         <GrowthCurveCard />
+
+        <ScenariosPanel />
 
         <div className="grid md:grid-cols-3 gap-4">
           <InfoCard
