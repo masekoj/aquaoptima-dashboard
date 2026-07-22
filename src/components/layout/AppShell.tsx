@@ -1,16 +1,21 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Fish, Settings, LineChart, Waves } from "lucide-react";
+import { LayoutDashboard, Waves, LogIn, LogOut } from "lucide-react";
 import type { ReactNode } from "react";
+import { toast } from "sonner";
 
-const nav = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/cycles", label: "Harvest Cycles", icon: Fish },
-  { to: "/analytics", label: "Analytics", icon: LineChart },
-  { to: "/settings", label: "Settings", icon: Settings },
-];
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
+
+const nav = [{ to: "/", label: "Dashboard", icon: LayoutDashboard }] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { user, loading } = useAuth();
+
+  const onSignOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("Signed out");
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground flex">
@@ -44,7 +49,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           })}
         </nav>
         <div className="p-4 text-xs text-muted-foreground border-t border-sidebar-border">
-          VBGF Engine · v0.1
+          VBGF Engine · v0.2
         </div>
       </aside>
 
@@ -56,8 +61,29 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
             <span className="font-semibold">AquaOptima</span>
           </div>
-          <div className="ml-auto text-xs text-muted-foreground">
-            Client-side simulation · not synced
+          <div className="ml-auto flex items-center gap-3">
+            {!loading && user ? (
+              <>
+                <span className="text-xs text-muted-foreground hidden sm:inline">
+                  {user.email}
+                </span>
+                <button
+                  onClick={onSignOut}
+                  className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                <LogIn className="h-3.5 w-3.5" />
+                Sign in
+              </Link>
+            )}
           </div>
         </header>
         <main className="flex-1 p-4 md:p-8">{children}</main>
