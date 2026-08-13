@@ -274,7 +274,7 @@ export function GrowthCurveCard() {
         </div>
 
         <div className="p-5 md:p-6 space-y-5">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <Stat icon={Ruler} label="Final length" value={`${finalLength.toFixed(1)} cm`} />
             <Stat
               icon={Weight}
@@ -287,7 +287,13 @@ export function GrowthCurveCard() {
               value={tHarvest ? `${tHarvest.toFixed(2)} yr` : "—"}
               highlight={tHarvest !== null}
             />
+            <Stat
+              icon={Activity}
+              label="Growth potential"
+              value={`${Math.round(envMultiplier * 100)}%`}
+            />
           </div>
+
 
           <div className="h-72 md:h-80 w-full -mx-2 md:mx-0 touch-pan-y">
             <ResponsiveContainer width="100%" height="100%">
