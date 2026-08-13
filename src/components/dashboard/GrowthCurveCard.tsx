@@ -8,19 +8,39 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Fish, Ruler, Weight, Clock, Info, CheckCircle2 } from "lucide-react";
+import {
+  Fish,
+  Ruler,
+  Weight,
+  Clock,
+  Info,
+  CheckCircle2,
+  Droplets,
+  Thermometer,
+  ChevronDown,
+  Activity,
+} from "lucide-react";
 
 import { useHarvestStore } from "@/store/harvest-store";
 import {
   generateGrowthCurve,
   timeToTargetWeight,
+  doStatus,
+  environmentalMultiplier,
 } from "@/utils/growth-models";
 import type { VBGFParams } from "@/types/growth";
+import { Slider } from "@/components/ui/slider";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
 
 type SpeciesPreset = {
   id: string;
