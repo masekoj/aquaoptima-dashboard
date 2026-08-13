@@ -147,6 +147,11 @@ export function GrowthCurveCard() {
   const finalLength = curve[curve.length - 1]?.length ?? 0;
   const finalWeight = curve[curve.length - 1]?.weight ?? 0;
 
+  const dissolvedOxygen = params.dissolvedOxygen ?? 6;
+  const temperature = params.temperature ?? 26;
+  const envMultiplier = environmentalMultiplier(params);
+
+
   const applySpecies = (s: SpeciesPreset) => {
     (Object.keys(s.params) as Array<keyof typeof s.params>).forEach((k) =>
       setParam(k, s.params[k]),
@@ -195,6 +200,14 @@ export function GrowthCurveCard() {
             })}
           </div>
         </div>
+
+        <EnvironmentalCard
+          dissolvedOxygen={dissolvedOxygen}
+          temperature={temperature}
+          multiplier={envMultiplier}
+          onChange={(key, value) => setParam(key, value)}
+        />
+
       </div>
 
       <div className="grid md:grid-cols-[280px_1fr] gap-0">
