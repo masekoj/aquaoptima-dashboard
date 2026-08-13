@@ -15,7 +15,12 @@ export interface VBGFParams {
   horizon: number;
   /** Number of samples along the curve */
   steps: number;
+  /** Dissolved oxygen (mg/L) */
+  dissolvedOxygen?: number;
+  /** Water temperature (°C) */
+  temperature?: number;
 }
+
 
 export interface GrowthPoint {
   t: number;

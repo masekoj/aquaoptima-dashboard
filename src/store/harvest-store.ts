@@ -17,7 +17,10 @@ const defaults: VBGFParams = {
   b: 3.0,
   horizon: 4, // years
   steps: 60,
+  dissolvedOxygen: 6.0, // mg/L
+  temperature: 26, // °C
 };
+
 
 export const useHarvestStore = create<HarvestState>((set) => ({
   params: defaults,
