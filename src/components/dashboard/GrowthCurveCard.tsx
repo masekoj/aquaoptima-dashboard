@@ -403,3 +403,112 @@ function Stat({
     </div>
   );
 }
+
+const TONE_CLASSES: Record<string, string> = {
+  success:
+    "border-[var(--color-success)]/40 bg-[var(--color-success)]/10 text-[var(--color-success)]",
+  warning: "border-amber-400/50 bg-amber-400/10 text-amber-600",
+  danger: "border-destructive/40 bg-destructive/10 text-destructive",
+};
+
+function EnvironmentalCard({
+  dissolvedOxygen,
+  temperature,
+  multiplier,
+  onChange,
+}: {
+  dissolvedOxygen: number;
+  temperature: number;
+  multiplier: number;
+  onChange: (key: keyof VBGFParams, value: number) => void;
+}) {
+  const [open, setOpen] = useState(true);
+  const status = doStatus(dissolvedOxygen);
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen} className="mt-4">
+      <div className="rounded-lg border border-border bg-background">
+        <CollapsibleTrigger className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left">
+          <span className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+            <Droplets className="h-4 w-4 text-[var(--color-ring)]" />
+            Environmental Parameters
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span
+              className={`rounded-full border px-2 py-0.5 text-[11px] font-medium ${TONE_CLASSES[status.tone]}`}
+            >
+              {status.label}
+            </span>
+            <ChevronDown
+              className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
+                open ? "rotate-180" : ""
+              }`}
+            />
+          </span>
+        </CollapsibleTrigger>
+
+        <CollapsibleContent>
+          <div className="space-y-5 border-t border-border px-4 py-4">
+            <div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium">
+                  <Droplets className="h-3.5 w-3.5 text-[var(--color-ring)]" />
+                  Dissolved Oxygen
+                </span>
+                <span className="text-sm font-semibold tabular-nums">
+                  {dissolvedOxygen.toFixed(1)} mg/L
+                </span>
+              </div>
+              <Slider
+                className="mt-3"
+                value={[dissolvedOxygen]}
+                min={1}
+                max={10}
+                step={0.1}
+                onValueChange={(v) => onChange("dissolvedOxygen", v[0] ?? 6)}
+              />
+              <div className="mt-1.5 flex justify-between text-[11px] text-muted-foreground">
+                <span>1.0</span>
+                <span>Optimal &gt; 5.0 · Stress 3–5 · Hypoxia &lt; 3.0</span>
+                <span>10.0</span>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium">
+                  <Thermometer className="h-3.5 w-3.5 text-[var(--color-ring)]" />
+                  Water Temperature
+                </span>
+                <span className="text-sm font-semibold tabular-nums">
+                  {temperature.toFixed(0)} °C
+                </span>
+              </div>
+              <Slider
+                className="mt-3"
+                value={[temperature]}
+                min={15}
+                max={35}
+                step={0.5}
+                onValueChange={(v) => onChange("temperature", v[0] ?? 26)}
+              />
+              <div className="mt-1.5 flex justify-between text-[11px] text-muted-foreground">
+                <span>15 °C</span>
+                <span>Optimum ≈ 28 °C</span>
+                <span>35 °C</span>
+              </div>
+            </div>
+
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Environmental stress scales the growth coefficient K to{" "}
+              <span className="font-semibold text-foreground">
+                {Math.round(multiplier * 100)}%
+              </span>{" "}
+              of its nominal value, flattening the curve and delaying harvest.
+            </p>
+          </div>
+        </CollapsibleContent>
+      </div>
+    </Collapsible>
+  );
+}
