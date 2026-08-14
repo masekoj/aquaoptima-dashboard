@@ -45,7 +45,7 @@ import {
 
 
 const fields: Array<{
-  key: keyof VBGFParams;
+  key: "Linf" | "K" | "t0" | "a" | "b" | "horizon";
   label: string;
   step: number;
   min?: number;
@@ -224,7 +224,7 @@ export function GrowthCurveCard() {
               </div>
               <input
                 type="number"
-                value={params[f.key]}
+                value={Number(params[f.key] ?? 0)}
                 step={f.step}
                 min={f.min}
                 onChange={(e) => {
