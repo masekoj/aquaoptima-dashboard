@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 
 import { useHarvestStore } from "@/store/harvest-store";
+import { SPECIES, type SpeciesPreset } from "@/utils/species";
 import {
   generateGrowthCurve,
   timeToTargetWeight,
