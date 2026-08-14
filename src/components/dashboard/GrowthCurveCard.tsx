@@ -114,7 +114,8 @@ export function GrowthCurveCard() {
   const setParam = useHarvestStore((s) => s.setParam);
   const targetWeight = useHarvestStore((s) => s.targetWeight);
   const setTargetWeight = useHarvestStore((s) => s.setTargetWeight);
-  const [activeSpecies, setActiveSpecies] = useState<string | null>(null);
+  const activeSpecies = useHarvestStore((s) => s.speciesId);
+  const setActiveSpecies = useHarvestStore((s) => s.setSpeciesId);
 
   const curve = useMemo(() => generateGrowthCurve(params), [params]);
   const tHarvest = useMemo(
