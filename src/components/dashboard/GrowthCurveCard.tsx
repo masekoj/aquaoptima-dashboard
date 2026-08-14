@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 
 import { useHarvestStore } from "@/store/harvest-store";
+import { SPECIES, type SpeciesPreset } from "@/utils/species";
 import {
   generateGrowthCurve,
   timeToTargetWeight,
@@ -42,32 +43,9 @@ import {
 } from "@/components/ui/popover";
 
 
-type SpeciesPreset = {
-  id: string;
-  name: string;
-  params: Pick<VBGFParams, "Linf" | "K" | "t0" | "a" | "b">;
-};
-
-const SPECIES: SpeciesPreset[] = [
-  {
-    id: "tilapia",
-    name: "Nile Tilapia",
-    params: { Linf: 40, K: 0.55, t0: -0.1, a: 0.02, b: 2.95 },
-  },
-  {
-    id: "makumba",
-    name: "Makumba",
-    params: { Linf: 55, K: 0.28, t0: -0.25, a: 0.014, b: 3.0 },
-  },
-  {
-    id: "catfish",
-    name: "African Catfish",
-    params: { Linf: 85, K: 0.22, t0: -0.15, a: 0.008, b: 3.05 },
-  },
-];
 
 const fields: Array<{
-  key: keyof VBGFParams;
+  key: "Linf" | "K" | "t0" | "a" | "b" | "horizon";
   label: string;
   step: number;
   min?: number;
@@ -136,7 +114,8 @@ export function GrowthCurveCard() {
   const setParam = useHarvestStore((s) => s.setParam);
   const targetWeight = useHarvestStore((s) => s.targetWeight);
   const setTargetWeight = useHarvestStore((s) => s.setTargetWeight);
-  const [activeSpecies, setActiveSpecies] = useState<string | null>(null);
+  const activeSpecies = useHarvestStore((s) => s.speciesId);
+  const setActiveSpecies = useHarvestStore((s) => s.setSpeciesId);
 
   const curve = useMemo(() => generateGrowthCurve(params), [params]);
   const tHarvest = useMemo(
@@ -245,7 +224,7 @@ export function GrowthCurveCard() {
               </div>
               <input
                 type="number"
-                value={params[f.key]}
+                value={Number(params[f.key] ?? 0)}
                 step={f.step}
                 min={f.min}
                 onChange={(e) => {

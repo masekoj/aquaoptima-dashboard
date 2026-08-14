@@ -19,6 +19,10 @@ export interface VBGFParams {
   dissolvedOxygen?: number;
   /** Water temperature (°C) */
   temperature?: number;
+  /** Cycle metadata: fish stocked (persisted with saved cycles) */
+  population?: number;
+  /** Cycle metadata: species preset id (persisted with saved cycles) */
+  speciesId?: string | null;
 }
 
 
